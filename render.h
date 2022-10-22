@@ -80,17 +80,16 @@ namespace render
     void pop_clip_rect();
 
     // actual drawing functions
-    void draw_line(const vec2_t& p1, const vec2_t& p2, const color_t& color, float thickness = 1.0f);
-    void draw_rect(const vec2_t& pos, const vec2_t& size, const color_t& color, float rounding = 0.0f, float thickness = 1.0f, uint32_t flags = 0);
-    void draw_rect_filled(const vec2_t& pos, const vec2_t& size, const color_t& color, float rounding = 0.0f, uint32_t flags = 0);
-    void draw_rect_filled_multicolor(const vec2_t& pos, const vec2_t& size, const color_t& color_upr_left, const color_t& col_upr_right, const color_t& col_bot_right, const color_t& col_bot_left, uint32_t flags = 0);
-    void draw_text(const vec2_t& pos, const color_t& color, const char* text, uint32_t flags = 0);
-    void draw_triangle(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const color_t& color, float thickness = 1.0f);
-    void draw_triangle_filled(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const color_t& color);
-    void draw_circle(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments = 0, float thickness = 1.0f);
-    void draw_circle_filled(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments = 0);
-
-    // TODO:
+    void line(const vec2_t& p1, const vec2_t& p2, const color_t& color, float thickness = 1.0f);
+    void rect(const vec2_t& pos, const vec2_t& size, const color_t& color, float rounding = 0.0f, float thickness = 1.0f, uint32_t flags = 0);
+    void rect_filled(const vec2_t& pos, const vec2_t& size, const color_t& color, float rounding = 0.0f, uint32_t flags = 0);
+    void rect_filled_multicolor(const vec2_t& pos, const vec2_t& size, const color_t& color_upr_left, const color_t& col_upr_right, const color_t& col_bot_right, const color_t& col_bot_left, uint32_t flags = 0);
+    void text(const vec2_t& pos, const color_t& color, const char* text, uint32_t flags = 0);
+    void triangle(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const color_t& color, float thickness = 1.0f);
+    void triangle_filled(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const color_t& color);
+    void circle(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments = 0, float thickness = 1.0f);
+    void circle_filled(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments = 0);
+    void image(void* user_texture_id, const vec2_t& pos, const vec2_t& size, const vec2_t& uv_min = vec2_t(0.0f, 0.0f), const vec2_t& uv_max = vec2_t(1.0f, 1.0f), const color_t& color = color_t(1.0f), float rounding = 0.0f, uint32_t flags = 0);
 
     //IMGUI_API void  AddQuad(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, ImU32 col, float thickness = 1.0f);
     //IMGUI_API void  AddQuadFilled(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, ImU32 col);
@@ -101,7 +100,5 @@ namespace render
     //IMGUI_API void  AddConvexPolyFilled(const ImVec2* points, int num_points, ImU32 col);
     //IMGUI_API void  AddBezierCubic(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, ImU32 col, float thickness, int num_segments = 0); // Cubic Bezier (4 control points)
     //IMGUI_API void  AddBezierQuadratic(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, ImU32 col, float thickness, int num_segments = 0);               // Quadratic Bezier (3 control points)
-    //IMGUI_API void  AddImage(ImTextureID user_texture_id, const ImVec2& p_min, const ImVec2& p_max, const ImVec2& uv_min = ImVec2(0, 0), const ImVec2& uv_max = ImVec2(1, 1), ImU32 col = IM_COL32_WHITE);
     //IMGUI_API void  AddImageQuad(ImTextureID user_texture_id, const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, const ImVec2& uv1 = ImVec2(0, 0), const ImVec2& uv2 = ImVec2(1, 0), const ImVec2& uv3 = ImVec2(1, 1), const ImVec2& uv4 = ImVec2(0, 1), ImU32 col = IM_COL32_WHITE);
-    //IMGUI_API void  AddImageRounded(ImTextureID user_texture_id, const ImVec2& p_min, const ImVec2& p_max, const ImVec2& uv_min, const ImVec2& uv_max, ImU32 col, float rounding, ImDrawFlags flags = 0);
 }

@@ -27,12 +27,12 @@ void render::pop_clip_rect()
 	render::draw_list->PopClipRect();
 }
 
-void render::draw_line(const vec2_t& p1, const vec2_t& p2, const color_t& color, float thickness)
+void render::line(const vec2_t& p1, const vec2_t& p2, const color_t& color, float thickness)
 {
 	render::draw_list->AddLine(p1, p2, color, thickness);
 }
 
-void render::draw_rect(const vec2_t& pos, const vec2_t& size, const color_t& color, float rounding, float thickness, uint32_t flags)
+void render::rect(const vec2_t& pos, const vec2_t& size, const color_t& color, float rounding, float thickness, uint32_t flags)
 {
 	vec2_t new_pos = pos;
 
@@ -49,7 +49,7 @@ void render::draw_rect(const vec2_t& pos, const vec2_t& size, const color_t& col
 	render::draw_list->AddRect(new_pos, new_pos + size, color, rounding, flags, thickness);
 }
 
-void render::draw_rect_filled(const vec2_t& pos, const vec2_t& size, const color_t& color, float rounding, uint32_t flags)
+void render::rect_filled(const vec2_t& pos, const vec2_t& size, const color_t& color, float rounding, uint32_t flags)
 {
 	vec2_t new_pos = pos;
 
@@ -66,7 +66,7 @@ void render::draw_rect_filled(const vec2_t& pos, const vec2_t& size, const color
 	render::draw_list->AddRectFilled(new_pos, new_pos + size, color, rounding, flags);
 }
 
-void render::draw_rect_filled_multicolor(const vec2_t& pos, const vec2_t& size, const color_t& col_upr_left, const color_t& col_upr_right, const color_t& col_bot_right, const color_t& col_bot_left, uint32_t flags)
+void render::rect_filled_multicolor(const vec2_t& pos, const vec2_t& size, const color_t& col_upr_left, const color_t& col_upr_right, const color_t& col_bot_right, const color_t& col_bot_left, uint32_t flags)
 {
 	vec2_t new_pos = pos;
 
@@ -83,7 +83,7 @@ void render::draw_rect_filled_multicolor(const vec2_t& pos, const vec2_t& size, 
 	render::draw_list->AddRectFilledMultiColor(new_pos, new_pos + size, col_upr_left, col_upr_right, col_bot_right, col_bot_left);
 }
 
-void render::draw_text(const vec2_t& pos, const color_t& color, const char* text, uint32_t flags)
+void render::text(const vec2_t& pos, const color_t& color, const char* text, uint32_t flags)
 {
 	vec2_t new_pos = pos;
 	 
@@ -100,22 +100,27 @@ void render::draw_text(const vec2_t& pos, const color_t& color, const char* text
 	render::draw_list->AddText(new_pos, color, text);
 }
 
-void render::draw_triangle(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const color_t& color, float thickness)
+void render::triangle(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const color_t& color, float thickness)
 {
 	render::draw_list->AddTriangle(p1, p2, p3, color, thickness);
 }
 
-void render::draw_triangle_filled(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const color_t& color)
+void render::triangle_filled(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const color_t& color)
 {
 	render::draw_list->AddTriangleFilled(p1, p2, p3, color);
 }
 
-void render::draw_circle(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments, float thickness)
+void render::circle(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments, float thickness)
 {
 	render::draw_list->AddCircle(center, radius, color, num_segments, thickness);
 }
 
-void render::draw_circle_filled(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments)
+void render::circle_filled(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments)
 {
 	render::draw_list->AddCircleFilled(center, radius, color, num_segments);
+}
+
+void render::image(void* texture_id, const vec2_t& pos, const vec2_t& size, const vec2_t& uv_min, const vec2_t& uv_max, const color_t& color, float rounding, uint32_t flags)
+{
+	render::draw_list->AddImageRounded(texture_id, pos, pos + size, uv_min, uv_max, color, rounding, flags);
 }
