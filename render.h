@@ -90,14 +90,21 @@ namespace render
     void circle(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments = 0, float thickness = 1.0f);
     void circle_filled(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments = 0);
     void image(void* user_texture_id, const vec2_t& pos, const vec2_t& size, const vec2_t& uv_min = vec2_t(0.0f, 0.0f), const vec2_t& uv_max = vec2_t(1.0f, 1.0f), const color_t& color = color_t(1.0f), float rounding = 0.0f, uint32_t flags = 0);
+    void polyline(const vec2_t* points, size_t num_points, const color_t& color, float thickness = 1.0f, uint32_t flags = 0);
+    void convex_poly_filled(const vec2_t* points, size_t num_points, const color_t& color);
+    void ngon(const vec2_t& center, float radius, color_t& color, uint32_t num_segments, float thickness = 1.0f);
+    void ngon_filled(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments);
+    
+#ifdef IMGUI_HAS_SHADOWS
+    void shadow_rect(const vec2_t& pos, const vec2_t& size, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, float rounding = 0.0f, uint32_t flags = 0);
+    void shadow_circle(const vec2_t& center, float radius, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, uint32_t num_segments = 12, uint32_t flags = 0);
+    void shadow_convex_poly(const vec2_t* points, size_t num_points, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, uint32_t flags = 0);
+    void shadow_ngon(const vec2_t& center, float radius, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, uint32_t num_segments, uint32_t flags);
+#endif
 
     //IMGUI_API void  AddQuad(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, ImU32 col, float thickness = 1.0f);
     //IMGUI_API void  AddQuadFilled(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, ImU32 col);
-    //IMGUI_API void  AddNgon(const ImVec2& center, float radius, ImU32 col, int num_segments, float thickness = 1.0f);
-    //IMGUI_API void  AddNgonFilled(const ImVec2& center, float radius, ImU32 col, int num_segments);
     //IMGUI_API void  AddText(const ImFont* font, float font_size, const ImVec2& pos, ImU32 col, const char* text_begin, const char* text_end = NULL, float wrap_width = 0.0f, const ImVec4* cpu_fine_clip_rect = NULL);
-    //IMGUI_API void  AddPolyline(const ImVec2* points, int num_points, ImU32 col, ImDrawFlags flags, float thickness);
-    //IMGUI_API void  AddConvexPolyFilled(const ImVec2* points, int num_points, ImU32 col);
     //IMGUI_API void  AddBezierCubic(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, ImU32 col, float thickness, int num_segments = 0); // Cubic Bezier (4 control points)
     //IMGUI_API void  AddBezierQuadratic(const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, ImU32 col, float thickness, int num_segments = 0);               // Quadratic Bezier (3 control points)
     //IMGUI_API void  AddImageQuad(ImTextureID user_texture_id, const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4, const ImVec2& uv1 = ImVec2(0, 0), const ImVec2& uv2 = ImVec2(1, 0), const ImVec2& uv3 = ImVec2(1, 1), const ImVec2& uv4 = ImVec2(0, 1), ImU32 col = IM_COL32_WHITE);

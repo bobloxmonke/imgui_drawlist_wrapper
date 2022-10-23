@@ -124,3 +124,59 @@ void render::image(void* texture_id, const vec2_t& pos, const vec2_t& size, cons
 {
 	render::draw_list->AddImageRounded(texture_id, pos, pos + size, uv_min, uv_max, color, rounding, flags);
 }
+
+void render::polyline(const vec2_t* points, size_t num_points, const color_t& color, float thickness, uint32_t flags)
+{
+	render::draw_list->AddPolyline((ImVec2*)points, num_points, color, flags, thickness);
+}
+
+void render::convex_poly_filled(const vec2_t* points, size_t num_points, const color_t& color)
+{
+	render::draw_list->AddConvexPolyFilled((ImVec2*)points, num_points, color);
+}
+
+void render::ngon(const vec2_t& center, float radius, color_t& color, uint32_t num_segments, float thickness)
+{
+	render::draw_list->AddNgon(center, radius, color, num_segments, thickness);
+}
+
+void render::ngon_filled(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments)
+{
+	render::draw_list->AddNgonFilled(center, radius, color, num_segments);
+}
+
+#ifdef IMGUI_HAS_SHADOWS
+
+void render::shadow_rect(const vec2_t& pos, const vec2_t& size, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, float rounding, uint32_t flags)
+{
+	vec2_t new_pos = pos;
+
+	if (flags & render_flags_centered)
+	{
+		vec2_t rect_size = size;
+
+		if (!(flags & render_flags_centered_x)) rect_size.x = 0.0f;
+		else if (!(flags & render_flags_centered_y)) rect_size.y = 0.0f;
+
+		new_pos = (new_pos - rect_size / 2.0f);
+	}
+
+	render::draw_list->AddShadowRect(new_pos, new_pos + size, color, shadow_thickness, shadow_offset, flags, rounding);
+}
+
+void render::shadow_circle(const vec2_t& center, float radius, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, uint32_t num_segments, uint32_t flags)
+{
+	render::draw_list->AddShadowCircle(center, radius, color, shadow_thickness, shadow_offset, flags, num_segments);
+}
+
+void render::shadow_convex_poly(const vec2_t* points, size_t num_points, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, uint32_t flags)
+{
+	render::draw_list->AddShadowConvexPoly((ImVec2*)points, num_points, color, shadow_thickness, shadow_offset, flags);
+}
+
+void render::shadow_ngon(const vec2_t& center, float radius, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, uint32_t num_segments, uint32_t flags)
+{
+	render::draw_list->AddShadowNGon(center, radius, color, shadow_thickness, shadow_offset, flags, num_segments);
+}
+
+#endif
