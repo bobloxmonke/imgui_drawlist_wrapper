@@ -32,55 +32,61 @@ void render::line(const vec2_t& p1, const vec2_t& p2, const color_t& color, floa
 	render::draw_list->AddLine(p1, p2, color, thickness);
 }
 
-void render::rect(const vec2_t& pos, const vec2_t& size, const color_t& color, float rounding, float thickness, uint32_t flags)
+void render::rect(const vec2_t& p_min, const vec2_t& p_max, const color_t& color, float rounding, float thickness, uint32_t flags)
 {
-	vec2_t new_pos = pos;
+	vec2_t new_p_min = p_min;
+	vec2_t new_p_max = p_max;
 
 	if (flags & render_flags_centered)
 	{
-		vec2_t rect_size = size;
+		vec2_t rect_size = (p_max - p_min);
 
 		if (!(flags & render_flags_centered_x)) rect_size.x = 0.0f;
 		else if (!(flags & render_flags_centered_y)) rect_size.y = 0.0f;
 
-		new_pos = (new_pos - rect_size / 2.0f);
+		new_p_min = (new_p_min - rect_size / 2.0f);
+		new_p_max = (new_p_max - rect_size / 2.0f);
 	}
 
-	render::draw_list->AddRect(new_pos, new_pos + size, color, rounding, flags, thickness);
+	render::draw_list->AddRect(new_p_min, new_p_max, color, rounding, flags, thickness);
 }
 
-void render::rect_filled(const vec2_t& pos, const vec2_t& size, const color_t& color, float rounding, uint32_t flags)
+void render::rect_filled(const vec2_t& p_min, const vec2_t& p_max, const color_t& color, float rounding, uint32_t flags)
 {
-	vec2_t new_pos = pos;
+	vec2_t new_p_min = p_min;
+	vec2_t new_p_max = p_max;
 
 	if (flags & render_flags_centered)
 	{
-		vec2_t rect_size = size;
+		vec2_t rect_size = (p_max - p_min);
 
 		if (!(flags & render_flags_centered_x)) rect_size.x = 0.0f;
 		else if (!(flags & render_flags_centered_y)) rect_size.y = 0.0f;
 
-		new_pos = (new_pos - rect_size / 2.0f);
+		new_p_min = (new_p_min - rect_size / 2.0f);
+		new_p_max = (new_p_max - rect_size / 2.0f);
 	}
 
-	render::draw_list->AddRectFilled(new_pos, new_pos + size, color, rounding, flags);
+	render::draw_list->AddRectFilled(new_p_min, new_p_max, color, rounding, flags);
 }
 
-void render::rect_filled_multicolor(const vec2_t& pos, const vec2_t& size, const color_t& col_upr_left, const color_t& col_upr_right, const color_t& col_bot_right, const color_t& col_bot_left, uint32_t flags)
+void render::rect_filled_multicolor(const vec2_t& p_min, const vec2_t& p_max, const color_t& col_upr_left, const color_t& col_upr_right, const color_t& col_bot_right, const color_t& col_bot_left, uint32_t flags)
 {
-	vec2_t new_pos = pos;
+	vec2_t new_p_min = p_min;
+	vec2_t new_p_max = p_max;
 
 	if (flags & render_flags_centered)
 	{
-		vec2_t rect_size = size;
+		vec2_t rect_size = (p_max - p_min);
 
 		if (!(flags & render_flags_centered_x)) rect_size.x = 0.0f;
 		else if (!(flags & render_flags_centered_y)) rect_size.y = 0.0f;
 
-		new_pos = (new_pos - rect_size / 2.0f);
+		new_p_min = (new_p_min - rect_size / 2.0f);
+		new_p_max = (new_p_max - rect_size / 2.0f);
 	}
 
-	render::draw_list->AddRectFilledMultiColor(new_pos, new_pos + size, col_upr_left, col_upr_right, col_bot_right, col_bot_left);
+	render::draw_list->AddRectFilledMultiColor(new_p_min, new_p_max, col_upr_left, col_upr_right, col_bot_right, col_bot_left);
 }
 
 void render::text(const vec2_t& pos, const color_t& color, const char* text, uint32_t flags)
@@ -145,23 +151,35 @@ void render::ngon_filled(const vec2_t& center, float radius, const color_t& colo
 	render::draw_list->AddNgonFilled(center, radius, color, num_segments);
 }
 
+void render::quad(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const vec2_t& p4, const color_t& color, float thickness)
+{
+	render::draw_list->AddQuad(p1, p2, p3, p4, color, thickness);
+}
+
+void render::quad_filled(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const vec2_t& p4, const color_t& color)
+{
+	render::draw_list->AddQuadFilled(p1, p2, p3, p4, color);
+}
+
 #ifdef IMGUI_HAS_SHADOWS
 
-void render::shadow_rect(const vec2_t& pos, const vec2_t& size, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, float rounding, uint32_t flags)
+void render::shadow_rect(const vec2_t& p_min, const vec2_t& p_max, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, float rounding, uint32_t flags)
 {
-	vec2_t new_pos = pos;
+	vec2_t new_p_min = p_min;
+	vec2_t new_p_max = p_max;
 
 	if (flags & render_flags_centered)
 	{
-		vec2_t rect_size = size;
+		vec2_t rect_size = (p_max - p_min);
 
 		if (!(flags & render_flags_centered_x)) rect_size.x = 0.0f;
 		else if (!(flags & render_flags_centered_y)) rect_size.y = 0.0f;
 
-		new_pos = (new_pos - rect_size / 2.0f);
+		new_p_min = (new_p_min - rect_size / 2.0f);
+		new_p_max = (new_p_max - rect_size / 2.0f);
 	}
 
-	render::draw_list->AddShadowRect(new_pos, new_pos + size, color, shadow_thickness, shadow_offset, flags, rounding);
+	render::draw_list->AddShadowRect(new_p_min, new_p_max, color, shadow_thickness, shadow_offset, flags, rounding);
 }
 
 void render::shadow_circle(const vec2_t& center, float radius, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, uint32_t num_segments, uint32_t flags)
