@@ -5,7 +5,15 @@
 
 struct vec2_t
 {
-    float x, y;
+    union
+    {
+        struct
+        {
+            float x, y;
+        };
+
+        float raw[2];
+    };
 
     vec2_t() { x = y = 0.0f; }
     vec2_t(const ImVec2& im_vec) { x = im_vec.x; y = im_vec.y; }
@@ -27,7 +35,15 @@ struct vec2_t
 
 struct color_t
 {
-    float r, g, b, a;
+    union
+    {
+        struct
+        {
+            float r, g, b, a;
+        };
+
+        float raw[4];
+    };
 
     color_t() { r = g = b = a = 0.0f; }
     color_t(const ImVec4& im_color) { r = im_color.x; g = im_color.y; b = im_color.z; a = im_color.w; };
@@ -39,7 +55,17 @@ struct color_t
     operator ImVec4() const { return ImVec4(r, g, b, a); }
     operator ImU32() const { return ImGui::ColorConvertFloat4ToU32(*this); }
 
-    color_t from_hsv(float h, float s, float v, float _a = 1.0f) { float _r, _g, _b; ImGui::ColorConvertHSVtoRGB(h, s, v, _r, _g, _b); return color_t(_r, _g, _b, _a); }
+    color_t operator=(const color_t& color) { r = color.r; g = color.g; b = color.b; a = color.a; return *this; }
+
+    color_t operator+(const color_t& color) const { return color_t(r + color.r, g + color.g, b + color.b, a + color.a); }
+    color_t operator-(const color_t& color) const { return color_t(r - color.r, g - color.g, b - color.b, a - color.a); }
+    color_t operator*(const color_t& color) const { return color_t(r * color.r, g * color.g, b * color.b, a * color.a); }
+    color_t operator/(const color_t& color) const { return color_t(r / color.r, g / color.g, b / color.b, a / color.a); }
+
+    color_t operator*(const float& scalar) const { return color_t(r * scalar, g * scalar, b * scalar, a * scalar); }
+
+    color_t from_hsv(float h, float s, float v, float _a = 1.0f) const { float _r, _g, _b; ImGui::ColorConvertHSVtoRGB(h, s, v, _r, _g, _b); return color_t(_r, _g, _b, _a); }
+    color_t lerp(const color_t& color, float t) const { return ImLerp(*this, color, t); }
 };
 
 enum e_render_flags : uint32_t
@@ -83,7 +109,10 @@ namespace render
     void rect(const vec2_t& p_min, const vec2_t& p_max, const color_t& color, float rounding = 0.0f, float thickness = 1.0f, uint32_t flags = 0);
     void rect_filled(const vec2_t& p_min, const vec2_t& p_max, const color_t& color, float rounding = 0.0f, uint32_t flags = 0);
     void rect_filled_multicolor(const vec2_t& p_min, const vec2_t& p_max, const color_t& color_upr_left, const color_t& col_upr_right, const color_t& col_bot_right, const color_t& col_bot_left, uint32_t flags = 0);
+    void gradient_vertical(const vec2_t& p_min, const vec2_t& p_max, const color_t& color_upr, const color_t& color_bot, uint32_t flags = 0);
+    void gradient_horizontal(const vec2_t& p_min, const vec2_t& p_max, const color_t& color_left, const color_t& color_right, uint32_t flags = 0);
     void text(const vec2_t& pos, const color_t& color, const char* text, uint32_t flags = 0);
+    void text_fmt(const vec2_t& pos, const color_t& color, uint32_t flags, const char* fmt, ...);
     void triangle(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const color_t& color, float thickness = 1.0f);
     void triangle_filled(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const color_t& color);
     void circle(const vec2_t& center, float radius, const color_t& color, uint32_t num_segments = 0, float thickness = 1.0f);
@@ -104,6 +133,7 @@ namespace render
     void shadow_rect(const vec2_t& p_min, const vec2_t& p_max, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset = vec2_t(0, 0), float rounding = 0.0f, uint32_t flags = 0);
     void shadow_circle(const vec2_t& center, float radius, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset = vec2_t(0, 0), uint32_t num_segments = 12, uint32_t flags = 0);
     void shadow_convex_poly(const vec2_t* points, size_t num_points, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset = vec2_t(0, 0), uint32_t flags = 0);
+    void shadow_quad(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const vec2_t& p4, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset = vec2_t(0, 0), float rounding = 0.0f, uint32_t flags = 0);
     void shadow_ngon(const vec2_t& center, float radius, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, uint32_t num_segments, uint32_t flags);
 #endif
 }

@@ -89,6 +89,16 @@ void render::rect_filled_multicolor(const vec2_t& p_min, const vec2_t& p_max, co
 	render::draw_list->AddRectFilledMultiColor(new_p_min, new_p_max, col_upr_left, col_upr_right, col_bot_right, col_bot_left);
 }
 
+void render::gradient_vertical(const vec2_t& p_min, const vec2_t& p_max, const color_t& color_upr, const color_t& color_bot, uint32_t flags)
+{
+	render::rect_filled_multicolor(p_min, p_max, color_upr, color_upr, color_bot, color_bot, flags);
+}
+
+void render::gradient_horizontal(const vec2_t& p_min, const vec2_t& p_max, const color_t& color_left, const color_t& color_right, uint32_t flags)
+{
+	render::rect_filled_multicolor(p_min, p_max, color_left, color_right, color_right, color_left, flags);
+}
+
 void render::text(const vec2_t& pos, const color_t& color, const char* text, uint32_t flags)
 {
 	vec2_t new_pos = pos;
@@ -190,6 +200,16 @@ void render::shadow_circle(const vec2_t& center, float radius, const color_t& co
 void render::shadow_convex_poly(const vec2_t* points, size_t num_points, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, uint32_t flags)
 {
 	render::draw_list->AddShadowConvexPoly((ImVec2*)points, num_points, color, shadow_thickness, shadow_offset, flags);
+}
+
+void render::shadow_quad(const vec2_t& p1, const vec2_t& p2, const vec2_t& p3, const vec2_t& p4, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, float rounding, uint32_t flags)
+{
+	vec2_t points[] =
+	{
+		p1, p2, p3, p4
+	};
+
+	render::shadow_convex_poly(points, 4, color, shadow_thickness, shadow_offset, flags);
 }
 
 void render::shadow_ngon(const vec2_t& center, float radius, const color_t& color, float shadow_thickness, const vec2_t& shadow_offset, uint32_t num_segments, uint32_t flags)
